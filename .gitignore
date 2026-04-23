@@ -1,0 +1,24 @@
+# Build artifacts
+goallord-addons.zip
+
+# Design references (kept locally, not in repo)
+design-reference_*.jpg
+design-reference_*.jpeg
+design-reference_*.png
+
+# Local Claude Code state
+.claude/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log

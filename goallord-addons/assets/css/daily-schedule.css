@@ -1,0 +1,601 @@
+/* =============================================================
+ * Goallord Addons — Daily Schedule
+ * Layouts: classic (3-col), timeline, compact, cards, flow
+ * ============================================================= */
+
+.goallord-ds {
+	--goallord-ds-columns: 3;
+	--goallord-ds-anim-duration: 700ms;
+	--goallord-ds-anim-delay: 0ms;
+	--goallord-ds-stagger: 100ms;
+	--goallord-ds-easing: cubic-bezier(0.22, 1, 0.36, 1);
+	--goallord-ds-accent: #e8aa3c;
+	--goallord-ds-accent-soft: rgba(232, 170, 60, 0.18);
+
+	position: relative;
+	box-sizing: border-box;
+	color: #f5eed7;
+	overflow: hidden;
+	isolation: isolate;
+}
+
+.goallord-ds *,
+.goallord-ds *::before,
+.goallord-ds *::after {
+	box-sizing: border-box;
+}
+
+/* Decorative background + overlay layers */
+.goallord-ds__decor {
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	background-repeat: no-repeat;
+	background-position: right bottom;
+	background-size: auto 55%;
+	pointer-events: none;
+}
+
+.goallord-ds__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+}
+
+.goallord-ds__inner {
+	position: relative;
+	width: 100%;
+	max-width: 1280px;
+	margin: 0 auto;
+}
+
+/* ---------- Section Header ---------- */
+
+.goallord-ds__header {
+	display: block;
+	text-align: center;
+}
+
+.goallord-ds__header > * {
+	margin: 0;
+}
+
+.goallord-ds__header > * + * {
+	margin-top: 0.6rem;
+}
+
+.goallord-ds__eyebrow {
+	display: inline-block;
+}
+
+.goallord-ds__subtitle {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* ---------- Groups container ---------- */
+
+.goallord-ds__groups {
+	display: grid;
+	grid-template-columns: repeat(var(--goallord-ds-columns), minmax(0, 1fr));
+	align-items: start;
+}
+
+/* ---------- Group ---------- */
+
+.goallord-ds__group {
+	position: relative;
+	min-width: 0;
+}
+
+.goallord-ds__group-header {
+	display: block;
+}
+
+.goallord-ds__group-header > * {
+	margin: 0;
+}
+
+.goallord-ds__group-header > * + * {
+	margin-top: 8px;
+}
+
+.goallord-ds__group-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	transition: transform 380ms var(--goallord-ds-easing);
+}
+
+.goallord-ds__group-icon svg {
+	display: block;
+	width: 1em;
+	height: 1em;
+}
+
+.goallord-ds__group-icon i { font-style: normal; }
+
+.goallord-ds__group:hover .goallord-ds__group-icon {
+	transform: translateY(-2px);
+}
+
+.goallord-ds__group-title {
+	margin: 0;
+}
+
+.goallord-ds__group-subtitle {
+	margin-top: 6px;
+}
+
+.goallord-ds__group-divider {
+	display: inline-block;
+	width: 60px;
+	height: 1px;
+	margin-top: 14px;
+	background-color: rgba(232, 170, 60, 0.35);
+	vertical-align: middle;
+}
+
+[style*="--goallord-ds-group-accent"] .goallord-ds__group-divider {
+	background-color: var(--goallord-ds-group-accent);
+}
+
+/* ---------- Items ---------- */
+
+.goallord-ds__items {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.goallord-ds__item {
+	position: relative;
+	display: flex;
+	align-items: baseline;
+	gap: 16px;
+	transition:
+		background-color 260ms var(--goallord-ds-easing),
+		transform 260ms var(--goallord-ds-easing),
+		box-shadow 260ms var(--goallord-ds-easing),
+		border-color 260ms var(--goallord-ds-easing);
+	border-left: 3px solid transparent;
+}
+
+.goallord-ds__item--highlight {
+	border-left-color: var(--goallord-ds-accent);
+	box-shadow: inset 3px 0 0 var(--goallord-ds-accent);
+	background-color: rgba(232, 170, 60, 0.04);
+}
+
+.goallord-ds__item-time {
+	display: inline-flex;
+	flex: 0 0 auto;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.04em;
+	white-space: nowrap;
+}
+
+.goallord-ds__item-content {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.goallord-ds__item-head {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.goallord-ds__item-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	opacity: 0.85;
+	transition: transform 260ms var(--goallord-ds-easing), opacity 260ms var(--goallord-ds-easing);
+}
+
+.goallord-ds__item-icon svg { display: block; width: 1em; height: 1em; }
+.goallord-ds__item-icon i   { font-style: normal; }
+
+.goallord-ds__item:hover .goallord-ds__item-icon {
+	opacity: 1;
+	transform: translateX(2px);
+}
+
+.goallord-ds__item-title {
+	margin: 0;
+	transition: color 240ms var(--goallord-ds-easing);
+}
+
+.goallord-ds__item-title a {
+	color: inherit;
+	text-decoration: none;
+	transition: color 240ms var(--goallord-ds-easing);
+}
+
+.goallord-ds__item-desc {
+	margin: 6px 0 0;
+}
+
+.goallord-ds__item-status {
+	display: inline-flex;
+	align-items: center;
+	padding: 3px 8px;
+	border-radius: 999px;
+	line-height: 1;
+	background-color: rgba(232, 170, 60, 0.12);
+	color: rgba(232, 170, 60, 0.9);
+	margin-left: auto;
+}
+
+/* =============================================================
+ * LAYOUT 1 — CLASSIC 3-COL RHYTHM (default)
+ * Reference look: inline icon + label + extended underline rule
+ * ============================================================= */
+
+.goallord-ds--layout-classic .goallord-ds__group {
+	padding: 0 8px;
+	text-align: left;
+}
+
+.goallord-ds--layout-classic .goallord-ds__group-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 28px;
+	min-width: 0;
+}
+
+.goallord-ds--layout-classic .goallord-ds__group-header > * {
+	margin-top: 0;
+}
+
+.goallord-ds--layout-classic .goallord-ds__group-icon {
+	flex: 0 0 auto;
+	margin-bottom: 0;
+	font-size: 20px;
+	line-height: 1;
+}
+
+.goallord-ds--layout-classic .goallord-ds__group-title {
+	flex: 0 0 auto;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	line-height: 1.2;
+}
+
+.goallord-ds--layout-classic .goallord-ds__group-subtitle {
+	flex: 0 0 auto;
+	margin-top: 0;
+	margin-left: 6px;
+	font-size: 11px;
+	opacity: 0.7;
+	white-space: nowrap;
+}
+
+.goallord-ds--layout-classic .goallord-ds__group-divider {
+	flex: 1 1 auto;
+	width: auto;
+	min-width: 20px;
+	height: 1px;
+	margin: 0 0 0 4px;
+	vertical-align: baseline;
+}
+
+.goallord-ds--layout-classic .goallord-ds__item {
+	background-color: transparent;
+	align-items: baseline;
+}
+
+/* =============================================================
+ * LAYOUT 2 — VERTICAL TIMELINE
+ * ============================================================= */
+
+.goallord-ds--layout-timeline .goallord-ds__groups {
+	grid-template-columns: minmax(0, 1fr);
+	padding-left: 52px;
+	position: relative;
+}
+
+.goallord-ds--layout-timeline .goallord-ds__timeline-rail {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 18px;
+	width: 2px;
+	background-color: rgba(232, 170, 60, 0.35);
+	transform-origin: top;
+}
+
+.goallord-ds--layout-timeline[data-timeline-grow="1"]:not(.is-visible) .goallord-ds__timeline-rail {
+	transform: scaleY(0);
+	transition: transform 1100ms var(--goallord-ds-easing) 200ms;
+}
+
+.goallord-ds--layout-timeline[data-timeline-grow="1"].is-visible .goallord-ds__timeline-rail {
+	transform: scaleY(1);
+	transition: transform 1100ms var(--goallord-ds-easing) 200ms;
+}
+
+.goallord-ds--layout-timeline .goallord-ds__group {
+	padding-left: 0;
+}
+
+.goallord-ds--layout-timeline .goallord-ds__group-header {
+	position: relative;
+	margin-left: -52px;
+	padding-left: 52px;
+}
+
+.goallord-ds--layout-timeline .goallord-ds__group-header::before {
+	content: "";
+	position: absolute;
+	left: 12px;
+	top: 10px;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background-color: var(--goallord-ds-accent);
+	box-shadow: 0 0 0 5px rgba(232, 170, 60, 0.18);
+}
+
+.goallord-ds--layout-timeline .goallord-ds__item {
+	position: relative;
+	padding-left: 12px;
+}
+
+.goallord-ds--layout-timeline .goallord-ds__timeline-dot {
+	position: absolute;
+	left: -42px;
+	top: 10px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: var(--goallord-ds-accent);
+	box-shadow: 0 0 0 4px rgba(232, 170, 60, 0.15);
+	transition: transform 260ms var(--goallord-ds-easing);
+}
+
+.goallord-ds--layout-timeline .goallord-ds__item:hover .goallord-ds__timeline-dot {
+	transform: scale(1.3);
+}
+
+/* Groups spacing in timeline */
+.goallord-ds--layout-timeline .goallord-ds__group + .goallord-ds__group {
+	margin-top: 56px;
+}
+
+/* =============================================================
+ * LAYOUT 3 — COMPACT LIST
+ * ============================================================= */
+
+.goallord-ds--layout-compact .goallord-ds__groups {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.goallord-ds--layout-compact .goallord-ds__group-header {
+	flex-direction: row;
+	align-items: center;
+	gap: 12px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid rgba(245, 238, 215, 0.1);
+	text-align: left;
+}
+
+.goallord-ds--layout-compact .goallord-ds__group-header > .goallord-ds__group-icon {
+	margin-bottom: 0;
+	font-size: 18px;
+}
+
+.goallord-ds--layout-compact .goallord-ds__group-title {
+	font-size: 14px;
+	letter-spacing: 0.12em;
+}
+
+.goallord-ds--layout-compact .goallord-ds__group-subtitle {
+	margin-top: 0;
+	margin-left: auto;
+	font-size: 12px;
+	opacity: 0.6;
+}
+
+.goallord-ds--layout-compact .goallord-ds__group-divider { display: none; }
+
+.goallord-ds--layout-compact .goallord-ds__item {
+	padding: 10px 12px;
+	border-bottom: 1px solid rgba(245, 238, 215, 0.06);
+	border-radius: 0 !important;
+}
+
+.goallord-ds--layout-compact .goallord-ds__item-title {
+	font-size: 15px;
+}
+
+.goallord-ds--layout-compact .goallord-ds__item-desc {
+	font-size: 13px;
+	opacity: 0.7;
+}
+
+/* =============================================================
+ * LAYOUT 4 — CARD-BASED
+ * ============================================================= */
+
+.goallord-ds--layout-cards .goallord-ds__group {
+	/* Card bg/border set via style controls */
+}
+
+.goallord-ds--layout-cards .goallord-ds__group-header {
+	align-items: center;
+	text-align: center;
+}
+
+.goallord-ds--layout-cards .goallord-ds__item {
+	justify-content: flex-start;
+	background-color: transparent;
+}
+
+/* =============================================================
+ * LAYOUT 5 — SINGLE COLUMN FLOW
+ * ============================================================= */
+
+.goallord-ds--layout-flow .goallord-ds__groups {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.goallord-ds--layout-flow .goallord-ds__group-header {
+	align-items: flex-start;
+	text-align: left;
+}
+
+.goallord-ds--layout-flow .goallord-ds__items {
+	padding-left: 0;
+}
+
+/* =============================================================
+ * RESPONSIVE — classic + cards
+ * ============================================================= */
+
+@media (max-width: 1024px) {
+	.goallord-ds--layout-classic .goallord-ds__groups,
+	.goallord-ds--layout-cards .goallord-ds__groups {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 640px) {
+	.goallord-ds--layout-classic .goallord-ds__groups,
+	.goallord-ds--layout-cards .goallord-ds__groups {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.goallord-ds--layout-timeline .goallord-ds__groups {
+		padding-left: 40px;
+	}
+	.goallord-ds--layout-timeline .goallord-ds__timeline-rail {
+		left: 12px;
+	}
+	.goallord-ds--layout-timeline .goallord-ds__group-header {
+		margin-left: -40px;
+		padding-left: 40px;
+	}
+	.goallord-ds--layout-timeline .goallord-ds__group-header::before {
+		left: 6px;
+	}
+	.goallord-ds--layout-timeline .goallord-ds__timeline-dot {
+		left: -34px;
+	}
+}
+
+/* =============================================================
+ * ENTRANCE ANIMATIONS
+ * ============================================================= */
+
+.goallord-ds[data-goallord-ds-animate="1"] .goallord-ds__header,
+.goallord-ds[data-goallord-ds-animate="1"] .goallord-ds__group,
+.goallord-ds[data-goallord-ds-animate="1"] .goallord-ds__item {
+	opacity: 0;
+	transition:
+		opacity var(--goallord-ds-anim-duration) var(--goallord-ds-easing),
+		transform var(--goallord-ds-anim-duration) var(--goallord-ds-easing);
+	transition-delay: var(--goallord-ds-anim-delay);
+	will-change: opacity, transform;
+}
+
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="fade"] .goallord-ds__header,
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="fade"] .goallord-ds__group,
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="fade"] .goallord-ds__item {
+	transform: none;
+}
+
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="fade-up"] .goallord-ds__header,
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="fade-up"] .goallord-ds__group,
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="fade-up"] .goallord-ds__item {
+	transform: translateY(26px);
+}
+
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="fade-down"] .goallord-ds__header,
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="fade-down"] .goallord-ds__group,
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="fade-down"] .goallord-ds__item {
+	transform: translateY(-26px);
+}
+
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="zoom"] .goallord-ds__header,
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="zoom"] .goallord-ds__group,
+.goallord-ds[data-goallord-ds-animate="1"][data-animation="zoom"] .goallord-ds__item {
+	transform: scale(0.96);
+}
+
+/* Group stagger */
+.goallord-ds[data-goallord-ds-animate="1"][data-stagger="1"] .goallord-ds__group {
+	transition-delay: calc(var(--goallord-ds-anim-delay) + (var(--goallord-ds-index, 0) * var(--goallord-ds-stagger)));
+}
+
+/* Per-item stagger (scoped to not double-up with group stagger) */
+.goallord-ds[data-goallord-ds-animate="1"][data-stagger="1"] .goallord-ds__item {
+	transition-delay: calc(var(--goallord-ds-anim-delay) + 200ms + (var(--goallord-ds-item-index, 0) * (var(--goallord-ds-stagger) / 2)));
+}
+
+/* Visible state */
+.goallord-ds.is-visible[data-goallord-ds-animate="1"] .goallord-ds__header,
+.goallord-ds.is-visible[data-goallord-ds-animate="1"] .goallord-ds__group,
+.goallord-ds.is-visible[data-goallord-ds-animate="1"] .goallord-ds__item {
+	opacity: 1;
+	transform: none;
+}
+
+/* =============================================================
+ * EMPTY STATE (editor)
+ * ============================================================= */
+
+.goallord-ds--empty {
+	padding: 40px;
+	border: 1px dashed rgba(245, 238, 215, 0.3);
+	border-radius: 12px;
+	color: rgba(245, 238, 215, 0.7);
+	text-align: center;
+	background-color: rgba(11, 18, 32, 0.5);
+}
+
+/* =============================================================
+ * REDUCED MOTION
+ * ============================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+	.goallord-ds,
+	.goallord-ds *,
+	.goallord-ds *::before,
+	.goallord-ds *::after {
+		transition-duration: 0.001ms !important;
+		animation-duration: 0.001ms !important;
+		transform: none !important;
+	}
+	.goallord-ds[data-goallord-ds-animate="1"] .goallord-ds__header,
+	.goallord-ds[data-goallord-ds-animate="1"] .goallord-ds__group,
+	.goallord-ds[data-goallord-ds-animate="1"] .goallord-ds__item {
+		opacity: 1 !important;
+	}
+}
+
+/* =============================================================
+ * EDITOR — always visible inside the preview
+ * ============================================================= */
+
+.elementor-editor-active .goallord-ds[data-goallord-ds-animate="1"] .goallord-ds__header,
+.elementor-editor-active .goallord-ds[data-goallord-ds-animate="1"] .goallord-ds__group,
+.elementor-editor-active .goallord-ds[data-goallord-ds-animate="1"] .goallord-ds__item {
+	opacity: 1;
+	transform: none;
+}
+
+.elementor-editor-active .goallord-ds--layout-timeline[data-timeline-grow="1"] .goallord-ds__timeline-rail {
+	transform: scaleY(1);
+}

@@ -1,0 +1,689 @@
+/* =============================================================
+ * Goallord Addons — Announcement & News
+ * Layouts: editorial, minimal, featured, sidebar, timeline
+ * ============================================================= */
+
+.goallord-an {
+	--goallord-an-columns: 3;
+	--goallord-an-image-ratio: 16 / 9;
+	--goallord-an-stretch: stretch;
+
+	/* Animations */
+	--goallord-an-anim-duration: 700ms;
+	--goallord-an-anim-delay: 0ms;
+	--goallord-an-stagger: 120ms;
+	--goallord-an-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+	/* Hover */
+	--goallord-an-lift: -6px;
+	--goallord-an-zoom-scale: 1.05;
+
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.goallord-an *,
+.goallord-an *::before,
+.goallord-an *::after {
+	box-sizing: border-box;
+}
+
+/* ---------- Header ---------- */
+
+.goallord-an__header {
+	display: block;
+	text-align: center;
+}
+
+.goallord-an__header > * {
+	margin: 0;
+}
+
+.goallord-an__header > * + * {
+	margin-top: 0.5rem;
+}
+
+.goallord-an__eyebrow {
+	display: inline-block;
+}
+
+.goallord-an__title {
+	margin: 0;
+}
+
+.goallord-an__subtitle {
+	margin-top: 0.5rem;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* ---------- Grid (shared base) ---------- */
+
+.goallord-an__grid {
+	display: grid;
+	grid-template-columns: repeat(var(--goallord-an-columns), minmax(0, 1fr));
+	align-items: var(--goallord-an-stretch);
+}
+
+/* ---------- Card (shared base) ---------- */
+
+.goallord-an__card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	min-width: 0;
+	transition:
+		transform var(--goallord-an-anim-duration) var(--goallord-an-easing),
+		box-shadow var(--goallord-an-anim-duration) var(--goallord-an-easing),
+		border-color var(--goallord-an-anim-duration) var(--goallord-an-easing),
+		background-color var(--goallord-an-anim-duration) var(--goallord-an-easing);
+}
+
+.goallord-an__image {
+	position: relative;
+	width: 100%;
+	aspect-ratio: var(--goallord-an-image-ratio);
+	overflow: hidden;
+	background-color: #f1f5f9;
+}
+
+.goallord-an__image-link {
+	display: block;
+	width: 100%;
+	height: 100%;
+	line-height: 0;
+}
+
+.goallord-an__image-tag {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform calc(var(--goallord-an-anim-duration) + 200ms) var(--goallord-an-easing);
+	will-change: transform;
+}
+
+.goallord-an__body {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+/* ---------- Meta ---------- */
+
+.goallord-an__meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5em;
+	line-height: 1.2;
+}
+
+.goallord-an__category {
+	font-weight: 700;
+}
+
+.goallord-an__meta-extra {
+	opacity: 0.85;
+}
+
+.goallord-an__meta-sep {
+	opacity: 0.5;
+}
+
+/* ---------- Icon ---------- */
+
+.goallord-an__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	align-self: flex-start;
+	transition:
+		color 250ms var(--goallord-an-easing),
+		background-color 250ms var(--goallord-an-easing),
+		transform 280ms var(--goallord-an-easing);
+}
+
+.goallord-an__icon svg {
+	display: block;
+	width: 1em;
+	height: 1em;
+}
+
+.goallord-an__icon i {
+	font-style: normal;
+}
+
+.goallord-an-hover--yes .goallord-an__card:hover .goallord-an__icon {
+	transform: translateY(-2px);
+}
+
+/* ---------- Full content (WYSIWYG) ---------- */
+
+.goallord-an__full-content {
+	margin-bottom: 20px;
+	font-size: 0.95em;
+	line-height: 1.65;
+	color: inherit;
+}
+
+.goallord-an__full-content > *:first-child { margin-top: 0; }
+.goallord-an__full-content > *:last-child  { margin-bottom: 0; }
+
+.goallord-an__full-content p {
+	margin: 0 0 0.9em;
+}
+
+.goallord-an__full-content a {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.goallord-an__full-content ul,
+.goallord-an__full-content ol {
+	padding-left: 1.25em;
+	margin: 0 0 0.9em;
+}
+
+.goallord-an__full-content blockquote {
+	border-left: 3px solid currentColor;
+	padding-left: 1em;
+	margin: 0.5em 0 1em;
+	opacity: 0.85;
+	font-style: italic;
+}
+
+/* ---------- Card title ---------- */
+
+.goallord-an__card-title {
+	margin: 0;
+	transition: color 250ms var(--goallord-an-easing);
+}
+
+.goallord-an__card-title a {
+	color: inherit;
+	text-decoration: none;
+	transition: color 250ms var(--goallord-an-easing);
+}
+
+/* ---------- Description ---------- */
+
+.goallord-an__description {
+	margin: 0;
+}
+
+/* ---------- Badge ---------- */
+
+.goallord-an__badge {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	white-space: nowrap;
+	z-index: 2;
+	backdrop-filter: saturate(1.2);
+}
+
+.goallord-an__badge-wrap {
+	padding: 12px 12px 0;
+}
+
+.goallord-an__badge-wrap .goallord-an__badge {
+	position: static;
+}
+
+.goallord-an__badge--success { background-color: #15803d; color: #fff; }
+.goallord-an__badge--warning { background-color: #b45309; color: #fff; }
+.goallord-an__badge--urgent  { background-color: #b91c1c; color: #fff; }
+.goallord-an__badge--info    { background-color: #1d4ed8; color: #fff; }
+
+/* ---------- CTA ---------- */
+
+.goallord-an__cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	text-decoration: none;
+	margin-top: auto;
+	align-self: flex-start;
+	cursor: pointer;
+	transition: color 250ms var(--goallord-an-easing), background-color 250ms var(--goallord-an-easing);
+	border-radius: 6px;
+}
+
+.goallord-an__cta--static {
+	cursor: default;
+}
+
+.goallord-an__cta-icon {
+	display: inline-block;
+	transition: transform 280ms var(--goallord-an-easing);
+	will-change: transform;
+}
+
+.goallord-an__card:hover .goallord-an__cta-icon,
+.goallord-an__cta:hover .goallord-an__cta-icon {
+	transform: translateX(4px);
+}
+
+/* =============================================================
+ * LAYOUT 1 — EDITORIAL GRID (default)
+ * ============================================================= */
+
+.goallord-an--layout-editorial .goallord-an__grid {
+	/* use base grid */
+}
+
+/* =============================================================
+ * LAYOUT 2 — MINIMAL LIST
+ * ============================================================= */
+
+.goallord-an--layout-minimal .goallord-an__grid {
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0;
+}
+
+.goallord-an--layout-minimal .goallord-an__card {
+	flex-direction: row;
+	align-items: stretch;
+	border-radius: 0;
+	border-left: 0;
+	border-right: 0;
+	border-top: 0;
+}
+
+.goallord-an--layout-minimal .goallord-an__card:first-child {
+	border-top-width: 1px;
+}
+
+.goallord-an--layout-minimal .goallord-an__image {
+	flex: 0 0 200px;
+	aspect-ratio: 1 / 1;
+}
+
+.goallord-an--layout-minimal .goallord-an__body {
+	padding: 20px 24px;
+}
+
+.goallord-an--layout-minimal .goallord-an__card-title {
+	font-size: 1.1em;
+}
+
+@media (max-width: 640px) {
+	.goallord-an--layout-minimal .goallord-an__card {
+		flex-direction: column;
+	}
+	.goallord-an--layout-minimal .goallord-an__image {
+		flex: 0 0 auto;
+		aspect-ratio: 16 / 9;
+	}
+}
+
+/* =============================================================
+ * LAYOUT 3 — FEATURED + GRID
+ * ============================================================= */
+
+.goallord-an--layout-featured .goallord-an__grid {
+	/* first child spans full width, rest flow normally */
+}
+
+.goallord-an--layout-featured .goallord-an__card--featured {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: 1.15fr 1fr;
+	align-items: stretch;
+}
+
+.goallord-an--layout-featured .goallord-an__card--featured.goallord-an__card--no-image {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.goallord-an--layout-featured .goallord-an__card--featured .goallord-an__image {
+	aspect-ratio: auto;
+	height: 100%;
+	min-height: 320px;
+}
+
+.goallord-an--layout-featured .goallord-an__card--featured .goallord-an__body {
+	padding: 40px;
+	justify-content: center;
+}
+
+.goallord-an--layout-featured .goallord-an__card--featured .goallord-an__card-title {
+	font-size: 1.6em;
+	line-height: 1.2;
+}
+
+.goallord-an--layout-featured .goallord-an__card--featured .goallord-an__description {
+	font-size: 1.05em;
+}
+
+@media (max-width: 782px) {
+	.goallord-an--layout-featured .goallord-an__card--featured {
+		grid-template-columns: 1fr;
+	}
+	.goallord-an--layout-featured .goallord-an__card--featured .goallord-an__image {
+		min-height: 0;
+		aspect-ratio: 16 / 9;
+	}
+	.goallord-an--layout-featured .goallord-an__card--featured .goallord-an__body {
+		padding: 24px;
+	}
+}
+
+/* =============================================================
+ * LAYOUT 4 — SIDEBAR BULLETIN
+ * ============================================================= */
+
+.goallord-an--layout-sidebar .goallord-an__grid {
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0;
+}
+
+.goallord-an--layout-sidebar .goallord-an__card {
+	flex-direction: row;
+	align-items: flex-start;
+	gap: 14px;
+	border-radius: 0;
+	border-left: 0;
+	border-right: 0;
+	border-top: 0;
+	padding: 16px 0;
+	box-shadow: none !important;
+	background-color: transparent !important;
+}
+
+.goallord-an--layout-sidebar .goallord-an__card:first-child {
+	border-top-width: 1px;
+}
+
+.goallord-an--layout-sidebar .goallord-an__image {
+	flex: 0 0 84px;
+	width: 84px;
+	height: 84px;
+	aspect-ratio: 1 / 1;
+	border-radius: 10px;
+}
+
+.goallord-an--layout-sidebar .goallord-an__body {
+	flex: 1 1 auto;
+	padding: 0;
+}
+
+.goallord-an--layout-sidebar .goallord-an__card-title {
+	font-size: 1em;
+	line-height: 1.35;
+	margin-bottom: 4px;
+}
+
+.goallord-an--layout-sidebar .goallord-an__description {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	margin-bottom: 8px;
+	font-size: 0.9em;
+}
+
+.goallord-an--layout-sidebar .goallord-an__meta {
+	font-size: 0.72em;
+	margin-bottom: 4px;
+}
+
+.goallord-an--layout-sidebar .goallord-an__badge {
+	position: static;
+	margin-left: 8px;
+}
+
+/* =============================================================
+ * LAYOUT 5 — TIMELINE
+ * ============================================================= */
+
+.goallord-an--layout-timeline .goallord-an__grid {
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0;
+	position: relative;
+	padding-left: 40px;
+}
+
+.goallord-an--layout-timeline .goallord-an__grid::before {
+	content: "";
+	position: absolute;
+	left: 12px;
+	top: 8px;
+	bottom: 8px;
+	width: 2px;
+	background: linear-gradient(to bottom, rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.18), rgba(15, 23, 42, 0.08));
+	border-radius: 2px;
+}
+
+.goallord-an--layout-timeline .goallord-an__card {
+	position: relative;
+	flex-direction: row;
+	gap: 20px;
+	align-items: flex-start;
+	padding: 20px 0;
+	border-left: 0;
+	border-right: 0;
+	border-top: 0;
+	background-color: transparent !important;
+	box-shadow: none !important;
+}
+
+.goallord-an--layout-timeline .goallord-an__card::before {
+	content: "";
+	position: absolute;
+	left: -34px;
+	top: 32px;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background-color: #b8860b;
+	box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.15);
+	transition: transform 280ms var(--goallord-an-easing);
+}
+
+.goallord-an--layout-timeline .goallord-an__card:hover::before {
+	transform: scale(1.25);
+}
+
+.goallord-an--layout-timeline .goallord-an__image {
+	flex: 0 0 160px;
+	width: 160px;
+	aspect-ratio: 4 / 3;
+	border-radius: 10px;
+}
+
+.goallord-an--layout-timeline .goallord-an__body {
+	flex: 1 1 auto;
+	padding: 0;
+}
+
+.goallord-an--layout-timeline .goallord-an__card-title {
+	font-size: 1.2em;
+	line-height: 1.3;
+}
+
+@media (max-width: 640px) {
+	.goallord-an--layout-timeline .goallord-an__grid {
+		padding-left: 28px;
+	}
+	.goallord-an--layout-timeline .goallord-an__grid::before {
+		left: 6px;
+	}
+	.goallord-an--layout-timeline .goallord-an__card::before {
+		left: -26px;
+		top: 24px;
+	}
+	.goallord-an--layout-timeline .goallord-an__card {
+		flex-direction: column;
+	}
+	.goallord-an--layout-timeline .goallord-an__image {
+		width: 100%;
+		flex: 0 0 auto;
+		aspect-ratio: 16 / 9;
+	}
+}
+
+/* =============================================================
+ * RESPONSIVE — editorial + featured default columns
+ * ============================================================= */
+
+@media (max-width: 1024px) {
+	.goallord-an--layout-editorial .goallord-an__grid,
+	.goallord-an--layout-featured .goallord-an__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 640px) {
+	.goallord-an--layout-editorial .goallord-an__grid,
+	.goallord-an--layout-featured .goallord-an__grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+/* =============================================================
+ * HOVER — card lift & image zoom (toggleable)
+ * ============================================================= */
+
+.goallord-an-hover--yes .goallord-an__card:hover {
+	transform: translateY(var(--goallord-an-lift));
+}
+
+/* Timeline and sidebar cards never lift — override regardless of ancestor class location */
+.goallord-an-hover--yes .goallord-an--layout-timeline .goallord-an__card:hover,
+.goallord-an-hover--yes .goallord-an--layout-sidebar .goallord-an__card:hover,
+.goallord-an--layout-timeline .goallord-an__card:hover,
+.goallord-an--layout-sidebar .goallord-an__card:hover {
+	transform: none;
+}
+
+.goallord-an-zoom--yes .goallord-an__card:hover .goallord-an__image-tag {
+	transform: scale(var(--goallord-an-zoom-scale));
+}
+
+/* =============================================================
+ * ENTRANCE ANIMATIONS
+ * Only apply when data-goallord-an-animate="1" is present AND
+ * the wrapper does NOT yet have .is-visible (set by JS).
+ * ============================================================= */
+
+.goallord-an[data-goallord-an-animate="1"] .goallord-an__card,
+.goallord-an[data-goallord-an-animate="1"] .goallord-an__header {
+	opacity: 0;
+	transition:
+		opacity var(--goallord-an-anim-duration) var(--goallord-an-easing),
+		transform var(--goallord-an-anim-duration) var(--goallord-an-easing);
+	transition-delay: var(--goallord-an-anim-delay);
+	will-change: opacity, transform;
+}
+
+/* Entrance variants */
+.goallord-an[data-goallord-an-animate="1"][data-animation="fade"] .goallord-an__card,
+.goallord-an[data-goallord-an-animate="1"][data-animation="fade"] .goallord-an__header {
+	transform: none;
+}
+
+.goallord-an[data-goallord-an-animate="1"][data-animation="fade-up"] .goallord-an__card,
+.goallord-an[data-goallord-an-animate="1"][data-animation="fade-up"] .goallord-an__header {
+	transform: translateY(28px);
+}
+
+.goallord-an[data-goallord-an-animate="1"][data-animation="fade-down"] .goallord-an__card,
+.goallord-an[data-goallord-an-animate="1"][data-animation="fade-down"] .goallord-an__header {
+	transform: translateY(-28px);
+}
+
+.goallord-an[data-goallord-an-animate="1"][data-animation="zoom"] .goallord-an__card,
+.goallord-an[data-goallord-an-animate="1"][data-animation="zoom"] .goallord-an__header {
+	transform: scale(0.96);
+}
+
+.goallord-an[data-goallord-an-animate="1"][data-animation="slide-left"] .goallord-an__card,
+.goallord-an[data-goallord-an-animate="1"][data-animation="slide-left"] .goallord-an__header {
+	transform: translateX(-40px);
+}
+
+.goallord-an[data-goallord-an-animate="1"][data-animation="slide-right"] .goallord-an__card,
+.goallord-an[data-goallord-an-animate="1"][data-animation="slide-right"] .goallord-an__header {
+	transform: translateX(40px);
+}
+
+/* Staggered reveal */
+.goallord-an[data-goallord-an-animate="1"][data-stagger="1"] .goallord-an__card {
+	transition-delay: calc(var(--goallord-an-anim-delay) + (var(--goallord-an-index, 0) * var(--goallord-an-stagger)));
+}
+
+/* Visible state (set by JS) */
+.goallord-an.is-visible[data-goallord-an-animate="1"] .goallord-an__card,
+.goallord-an.is-visible[data-goallord-an-animate="1"] .goallord-an__header {
+	opacity: 1;
+	transform: none;
+}
+
+/* =============================================================
+ * DIVIDER — off state (prefix_class "goallord-an-divider--")
+ * When the switcher is off, Elementor adds the bare prefix class
+ * with no suffix. Suppress the inherited border-bottom here.
+ * ============================================================= */
+
+.goallord-an-divider-- .goallord-an--layout-minimal .goallord-an__card,
+.goallord-an-divider-- .goallord-an--layout-sidebar .goallord-an__card,
+.goallord-an-divider-- .goallord-an--layout-timeline .goallord-an__card {
+	border-bottom: 0 !important;
+}
+
+/* =============================================================
+ * EMPTY STATE (editor only)
+ * ============================================================= */
+
+.goallord-an--empty {
+	padding: 40px;
+	border: 1px dashed #cbd5e1;
+	border-radius: 12px;
+	color: #64748b;
+	text-align: center;
+	font-size: 14px;
+}
+
+/* =============================================================
+ * ACCESSIBILITY — reduced motion
+ * ============================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+	.goallord-an,
+	.goallord-an *,
+	.goallord-an *::before,
+	.goallord-an *::after {
+		transition-duration: 0.001ms !important;
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+	}
+	.goallord-an[data-goallord-an-animate="1"] .goallord-an__card,
+	.goallord-an[data-goallord-an-animate="1"] .goallord-an__header {
+		opacity: 1 !important;
+		transform: none !important;
+	}
+	.goallord-an-hover--yes .goallord-an__card:hover,
+	.goallord-an-zoom--yes .goallord-an__card:hover .goallord-an__image-tag {
+		transform: none !important;
+	}
+}
+
+/* =============================================================
+ * EDITOR HELPERS — Elementor edit mode should never hide content
+ * ============================================================= */
+
+.elementor-editor-active .goallord-an[data-goallord-an-animate="1"] .goallord-an__card,
+.elementor-editor-active .goallord-an[data-goallord-an-animate="1"] .goallord-an__header {
+	opacity: 1;
+	transform: none;
+}
