@@ -152,6 +152,9 @@ check( 'Announcement CSS asset present',     file_exists( $plugin_root . '/asset
 check( 'Announcement JS asset present',      file_exists( $plugin_root . '/assets/js/announcement-news.js' ),   $report, $fail );
 check( 'Daily Schedule CSS asset present',   file_exists( $plugin_root . '/assets/css/daily-schedule.css' ), $report, $fail );
 check( 'Daily Schedule JS asset present',    file_exists( $plugin_root . '/assets/js/daily-schedule.js' ),   $report, $fail );
+check( 'Advanced Hero widget file present',  file_exists( $plugin_root . '/widgets/class-advanced-hero.php' ), $report, $fail );
+check( 'Advanced Hero CSS asset present',    file_exists( $plugin_root . '/assets/css/advanced-hero.css' ), $report, $fail );
+check( 'Advanced Hero JS asset present',     file_exists( $plugin_root . '/assets/js/advanced-hero.js' ),   $report, $fail );
 check( 'readme.txt present',             file_exists( $plugin_root . '/readme.txt' ), $report, $fail );
 
 // Syntax check by requiring each file.
@@ -162,6 +165,7 @@ try {
 	require_once $helpers_class;
 	require_once $widget_file;
 	require_once $plugin_root . '/widgets/class-daily-schedule.php';
+	require_once $plugin_root . '/widgets/class-advanced-hero.php';
 	require_once $main_file; // triggers goallord_addons() -> Plugin::instance()
 } catch ( \Throwable $e ) {
 	$syntax_ok = false;
@@ -184,6 +188,7 @@ check( 'Widgets_Manager class defined',   class_exists( '\\Goallord\\Addons\\Wid
 check( 'Helpers class defined',           class_exists( '\\Goallord\\Addons\\Helpers' ),               $report, $fail );
 check( 'Announcement_News widget class defined', class_exists( '\\Goallord\\Addons\\Widgets\\Announcement_News' ), $report, $fail );
 check( 'Daily_Schedule widget class defined',    class_exists( '\\Goallord\\Addons\\Widgets\\Daily_Schedule' ),    $report, $fail );
+check( 'Advanced_Hero widget class defined',     class_exists( '\\Goallord\\Addons\\Widgets\\Advanced_Hero' ),     $report, $fail );
 
 // Required widget methods.
 if ( class_exists( '\\Goallord\\Addons\\Widgets\\Announcement_News' ) ) {
@@ -216,6 +221,22 @@ if ( class_exists( '\\Goallord\\Addons\\Widgets\\Daily_Schedule' ) ) {
 	check( "Daily_Schedule::get_title() contains 'Daily Schedule'",  false !== strpos( $ds_inst->get_title(), 'Daily Schedule' ), $report, $fail );
 	check( "Daily_Schedule::get_style_depends() references handle",  in_array( 'goallord-daily-schedule', (array) $ds_inst->get_style_depends(), true ),  $report, $fail );
 	check( "Daily_Schedule::get_script_depends() references handle", in_array( 'goallord-daily-schedule', (array) $ds_inst->get_script_depends(), true ), $report, $fail );
+}
+
+// Advanced_Hero widget — methods.
+if ( class_exists( '\\Goallord\\Addons\\Widgets\\Advanced_Hero' ) ) {
+	$ah_ref = new \ReflectionClass( '\\Goallord\\Addons\\Widgets\\Advanced_Hero' );
+	foreach ( [ 'get_name', 'get_title', 'get_icon', 'get_categories', 'register_controls', 'render' ] as $method ) {
+		check( "Advanced_Hero::{$method}() exists", $ah_ref->hasMethod( $method ), $report, $fail );
+	}
+	foreach ( [ 'render_slide', 'render_headline' ] as $method ) {
+		check( "Advanced_Hero::{$method}() exists", $ah_ref->hasMethod( $method ), $report, $fail );
+	}
+	$ah_inst = $ah_ref->newInstance();
+	check( "Advanced_Hero::get_name() = 'goallord-advanced-hero'", 'goallord-advanced-hero' === $ah_inst->get_name(), $report, $fail );
+	check( "Advanced_Hero::get_title() contains 'Hero'",  false !== strpos( $ah_inst->get_title(), 'Hero' ), $report, $fail );
+	check( "Advanced_Hero::get_style_depends() references handle",  in_array( 'goallord-advanced-hero', (array) $ah_inst->get_style_depends(),  true ), $report, $fail );
+	check( "Advanced_Hero::get_script_depends() references handle", in_array( 'goallord-advanced-hero', (array) $ah_inst->get_script_depends(), true ), $report, $fail );
 }
 
 // Helpers — new query support methods.

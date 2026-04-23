@@ -107,6 +107,12 @@ final class Plugin {
 			[],
 			GOALLORD_ADDONS_VERSION
 		);
+		wp_register_style(
+			'goallord-advanced-hero',
+			GOALLORD_ADDONS_ASSETS . 'css/advanced-hero.css',
+			[],
+			GOALLORD_ADDONS_VERSION
+		);
 	}
 
 	public function register_scripts() {
@@ -120,6 +126,13 @@ final class Plugin {
 		wp_register_script(
 			'goallord-daily-schedule',
 			GOALLORD_ADDONS_ASSETS . 'js/daily-schedule.js',
+			[],
+			GOALLORD_ADDONS_VERSION,
+			true
+		);
+		wp_register_script(
+			'goallord-advanced-hero',
+			GOALLORD_ADDONS_ASSETS . 'js/advanced-hero.js',
 			[],
 			GOALLORD_ADDONS_VERSION,
 			true

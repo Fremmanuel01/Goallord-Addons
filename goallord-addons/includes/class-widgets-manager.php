@@ -24,6 +24,7 @@ class Widgets_Manager {
 	private $widgets_map = [
 		'Announcement_News' => 'widgets/class-announcement-news.php',
 		'Daily_Schedule'    => 'widgets/class-daily-schedule.php',
+		'Advanced_Hero'     => 'widgets/class-advanced-hero.php',
 	];
 
 	public function __construct() {

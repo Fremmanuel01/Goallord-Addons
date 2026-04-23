@@ -1,0 +1,428 @@
+/* =============================================================
+ * Goallord Addons — Advanced Hero
+ * Namespaces: .goallord-ah, .goallord-ah__*
+ * Modes: single, slider | Layouts: centered, split-left,
+ * split-right, fullbg, minimal | Transitions: slide, fade
+ * ============================================================= */
+
+.goallord-ah {
+	--goallord-ah-transition: 700ms;
+	--goallord-ah-anim-duration: 800ms;
+	--goallord-ah-anim-delay: 0ms;
+	--goallord-ah-stagger: 120ms;
+	--goallord-ah-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	isolation: isolate;
+	color: #ffffff;
+	font-family: inherit;
+}
+
+.goallord-ah *,
+.goallord-ah *::before,
+.goallord-ah *::after {
+	box-sizing: border-box;
+}
+
+.goallord-ah__viewport {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	min-height: inherit;
+	overflow: hidden;
+}
+
+/* ---------- Track (horizontal slide mode) ---------- */
+
+.goallord-ah__track {
+	display: flex;
+	width: 100%;
+	min-height: inherit;
+	transform: translate3d(0, 0, 0);
+	transition: transform var(--goallord-ah-transition) var(--goallord-ah-easing);
+}
+
+.goallord-ah--transition-slide .goallord-ah__track {
+	/* default slide-track behavior */
+}
+
+.goallord-ah--transition-fade .goallord-ah__track {
+	/* fade mode stacks slides */
+	display: block;
+	transition: none;
+	transform: none;
+}
+
+.goallord-ah__slide {
+	flex: 0 0 100%;
+	width: 100%;
+	min-height: inherit;
+	position: relative;
+	display: flex;
+	align-items: stretch;
+}
+
+/* Fade mode: stack all slides at the same spot */
+.goallord-ah--transition-fade .goallord-ah__slide {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--goallord-ah-transition) var(--goallord-ah-easing);
+	width: 100%;
+}
+
+.goallord-ah--transition-fade .goallord-ah__slide.is-active {
+	opacity: 1;
+	pointer-events: auto;
+	position: relative;
+}
+
+/* In single mode ensure the slide fills the viewport */
+.goallord-ah--mode-single .goallord-ah__slide {
+	flex: 1 1 100%;
+}
+
+/* ---------- Background ---------- */
+
+.goallord-ah__bg {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.goallord-ah__bg-video {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	pointer-events: none;
+}
+
+.goallord-ah__bg--parallax {
+	background-attachment: fixed;
+}
+
+/* iOS hates background-attachment: fixed — disable there */
+@supports (-webkit-touch-callout: none) {
+	.goallord-ah__bg--parallax { background-attachment: scroll; }
+}
+
+.goallord-ah__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+
+/* ---------- Content ---------- */
+
+.goallord-ah__content {
+	position: relative;
+	z-index: 2;
+	flex: 1 1 auto;
+	display: flex;
+	width: 100%;
+	min-width: 0;
+	align-items: center;
+}
+
+.goallord-ah__content-inner {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	min-width: 0;
+}
+
+/* Alignment */
+.goallord-ah__slide--align-left  .goallord-ah__content-inner { align-items: flex-start; text-align: left; }
+.goallord-ah__slide--align-center .goallord-ah__content-inner { align-items: center;     text-align: center; }
+.goallord-ah__slide--align-right .goallord-ah__content-inner { align-items: flex-end;   text-align: right; }
+
+/* Badge */
+.goallord-ah__badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 14px;
+	border-radius: 999px;
+	border: 1px solid;
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.goallord-ah__badge-icon { display: inline-flex; align-items: center; }
+.goallord-ah__badge-icon svg { width: 1em; height: 1em; display: block; }
+.goallord-ah__badge-icon i { font-style: normal; }
+
+/* Typography */
+.goallord-ah__subheading { margin: 0; }
+.goallord-ah__headline { margin: 0; letter-spacing: -0.01em; }
+.goallord-ah__highlight {
+	background: none;
+	display: inline;
+}
+.goallord-ah__description { margin: 0; max-width: 58ch; }
+.goallord-ah__slide--align-center .goallord-ah__description { margin-left: auto; margin-right: auto; }
+.goallord-ah__slide--align-right  .goallord-ah__description { margin-left: auto; }
+
+/* CTAs */
+.goallord-ah__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 8px;
+}
+
+.goallord-ah__cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	line-height: 1;
+	border: 0;
+	cursor: pointer;
+	text-decoration: none;
+	transition: transform 240ms var(--goallord-ah-easing),
+	            background-color 240ms var(--goallord-ah-easing),
+	            color 240ms var(--goallord-ah-easing),
+	            box-shadow 260ms var(--goallord-ah-easing);
+	will-change: transform;
+}
+
+.goallord-ah__cta:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.35);
+}
+
+.goallord-ah__cta-icon {
+	display: inline-flex;
+	align-items: center;
+	transition: transform 240ms var(--goallord-ah-easing);
+}
+
+.goallord-ah__cta-icon svg { width: 1em; height: 1em; display: block; }
+.goallord-ah__cta-icon i { font-style: normal; }
+
+.goallord-ah__cta:hover .goallord-ah__cta-icon {
+	transform: translateX(3px);
+}
+
+/* Trust */
+.goallord-ah__trust {
+	margin-top: 4px;
+	font-size: 13px;
+}
+
+/* ---------- Media ---------- */
+
+.goallord-ah__media {
+	flex: 1 1 50%;
+	min-width: 0;
+	overflow: hidden;
+	align-self: center;
+	line-height: 0;
+}
+
+.goallord-ah__media-img,
+.goallord-ah__media-video {
+	display: block;
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+}
+
+.goallord-ah__media-video {
+	border-radius: inherit;
+}
+
+/* ---------- LAYOUTS ---------- */
+
+/* Centered + Minimal + Fullbg — single content column */
+.goallord-ah__slide--layout-centered  .goallord-ah__content,
+.goallord-ah__slide--layout-minimal  .goallord-ah__content,
+.goallord-ah__slide--layout-fullbg   .goallord-ah__content {
+	justify-content: center;
+}
+
+.goallord-ah__slide--layout-minimal .goallord-ah__content-inner { gap: 12px; }
+
+/* Split layouts */
+.goallord-ah__slide--layout-split-left .goallord-ah__content,
+.goallord-ah__slide--layout-split-right .goallord-ah__content {
+	gap: 48px;
+	align-items: center;
+}
+
+.goallord-ah__slide--layout-split-left .goallord-ah__content { flex-direction: row; }
+.goallord-ah__slide--layout-split-right .goallord-ah__content { flex-direction: row-reverse; }
+
+.goallord-ah__slide--layout-split-left .goallord-ah__content-inner,
+.goallord-ah__slide--layout-split-right .goallord-ah__content-inner {
+	flex: 1 1 50%;
+}
+
+/* Split layouts default to left-aligned content (even if choose said center) */
+.goallord-ah__slide--layout-split-left .goallord-ah__content-inner,
+.goallord-ah__slide--layout-split-right .goallord-ah__content-inner {
+	align-items: flex-start;
+	text-align: left;
+}
+
+/* ---------- Navigation: arrows ---------- */
+
+.goallord-ah__arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 4;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	border: 0;
+	border-radius: 999px;
+	cursor: pointer;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	transition: background-color 200ms var(--goallord-ah-easing), transform 200ms var(--goallord-ah-easing);
+}
+
+.goallord-ah__arrow:hover {
+	background-color: rgba(255,255,255,0.2);
+	transform: translateY(-50%) scale(1.05);
+}
+
+.goallord-ah__arrow svg {
+	width: 60%;
+	height: 60%;
+}
+
+.goallord-ah__arrow--prev { left: 16px; }
+.goallord-ah__arrow--next { right: 16px; }
+
+@media (min-width: 768px) {
+	.goallord-ah__arrow--prev { left: 24px; }
+	.goallord-ah__arrow--next { right: 24px; }
+}
+
+/* ---------- Navigation: dots ---------- */
+
+.goallord-ah__dots {
+	position: absolute;
+	bottom: 24px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 4;
+	display: inline-flex;
+	gap: 8px;
+	padding: 8px 12px;
+}
+
+.goallord-ah__dot {
+	width: 8px;
+	height: 8px;
+	border: 0;
+	padding: 0;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: background-color 200ms var(--goallord-ah-easing), transform 200ms var(--goallord-ah-easing), width 200ms var(--goallord-ah-easing);
+}
+
+.goallord-ah__dot:hover { transform: scale(1.15); }
+.goallord-ah__dot.is-active { width: 28px; border-radius: 999px; }
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 900px) {
+	.goallord-ah__slide--layout-split-left .goallord-ah__content,
+	.goallord-ah__slide--layout-split-right .goallord-ah__content {
+		flex-direction: column;
+		gap: 28px;
+	}
+	.goallord-ah__slide--layout-split-left .goallord-ah__content-inner,
+	.goallord-ah__slide--layout-split-right .goallord-ah__content-inner {
+		align-items: center;
+		text-align: center;
+	}
+	.goallord-ah__media { width: 100%; }
+
+	.goallord-ah__headline { font-size: clamp(32px, 9vw, 48px) !important; }
+	.goallord-ah__description { font-size: 16px !important; }
+}
+
+/* ---------- ENTRANCE ANIMATIONS ---------- */
+
+.goallord-ah[data-goallord-ah-animate="1"] .goallord-ah__slide.is-active [data-anim-order] {
+	opacity: 0;
+	transition:
+		opacity var(--goallord-ah-anim-duration) var(--goallord-ah-easing),
+		transform var(--goallord-ah-anim-duration) var(--goallord-ah-easing);
+	transition-delay: calc(var(--goallord-ah-anim-delay) + (var(--anim-order, 1) - 1) * var(--goallord-ah-stagger));
+}
+
+/* Default (no stagger): all elements reveal at base delay */
+.goallord-ah[data-goallord-ah-animate="1"][data-stagger="0"] .goallord-ah__slide.is-active [data-anim-order] {
+	transition-delay: var(--goallord-ah-anim-delay);
+}
+
+/* Translate variants */
+.goallord-ah[data-goallord-ah-animate="1"][data-animation="fade"]        .goallord-ah__slide.is-active [data-anim-order] { transform: none; }
+.goallord-ah[data-goallord-ah-animate="1"][data-animation="fade-up"]     .goallord-ah__slide.is-active [data-anim-order] { transform: translateY(28px); }
+.goallord-ah[data-goallord-ah-animate="1"][data-animation="fade-down"]   .goallord-ah__slide.is-active [data-anim-order] { transform: translateY(-28px); }
+.goallord-ah[data-goallord-ah-animate="1"][data-animation="slide-left"]  .goallord-ah__slide.is-active [data-anim-order] { transform: translateX(-48px); }
+.goallord-ah[data-goallord-ah-animate="1"][data-animation="slide-right"] .goallord-ah__slide.is-active [data-anim-order] { transform: translateX(48px); }
+.goallord-ah[data-goallord-ah-animate="1"][data-animation="zoom"]        .goallord-ah__slide.is-active [data-anim-order] { transform: scale(0.94); }
+
+/* Revealed state */
+.goallord-ah.is-visible[data-goallord-ah-animate="1"] .goallord-ah__slide.is-active [data-anim-order],
+.goallord-ah[data-goallord-ah-animate="1"] .goallord-ah__slide.is-active.has-revealed [data-anim-order] {
+	opacity: 1;
+	transform: none;
+}
+
+/* Feed data-anim-order into the custom prop so CSS calc() can use it */
+.goallord-ah [data-anim-order="1"] { --anim-order: 1; }
+.goallord-ah [data-anim-order="2"] { --anim-order: 2; }
+.goallord-ah [data-anim-order="3"] { --anim-order: 3; }
+.goallord-ah [data-anim-order="4"] { --anim-order: 4; }
+.goallord-ah [data-anim-order="5"] { --anim-order: 5; }
+.goallord-ah [data-anim-order="6"] { --anim-order: 6; }
+.goallord-ah [data-anim-order="7"] { --anim-order: 7; }
+
+/* ---------- EMPTY / EDITOR ---------- */
+
+.goallord-ah--empty {
+	padding: 60px;
+	border: 1px dashed rgba(255,255,255,0.2);
+	border-radius: 12px;
+	text-align: center;
+	background: #0f1434;
+}
+
+.elementor-editor-active .goallord-ah[data-goallord-ah-animate="1"] [data-anim-order] {
+	opacity: 1 !important;
+	transform: none !important;
+}
+
+/* ---------- REDUCED MOTION ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+	.goallord-ah,
+	.goallord-ah * {
+		transition-duration: 0.001ms !important;
+		animation-duration: 0.001ms !important;
+	}
+	.goallord-ah__bg--parallax { background-attachment: scroll !important; }
+	.goallord-ah [data-anim-order] { opacity: 1 !important; transform: none !important; }
+}
